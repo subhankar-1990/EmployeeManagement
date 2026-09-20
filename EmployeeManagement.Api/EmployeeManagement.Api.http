@@ -7,3 +7,20 @@ Accept: text/plain
 ### OpenAPI Document v1
 GET {{EmployeeManagement.Api_HostAddress}}/openapi/v1.json
 Accept: application/json
+
+### Employee list - first page (defaults: pageNumber=1, pageSize=10)
+GET {{EmployeeManagement.Api_HostAddress}}/api/v1/employees
+Accept: application/json
+
+### Employee list - explicit paging
+GET {{EmployeeManagement.Api_HostAddress}}/api/v1/employees?pageNumber=2&pageSize=5
+Accept: application/json
+
+### Employee list - filtered by name, mobile number or email address
+GET {{EmployeeManagement.Api_HostAddress}}/api/v1/employees?pageNumber=1&pageSize=10&search=ada
+Accept: application/json
+
+### Employee list - invalid paging is rejected with a 400 problem+json response
+GET {{EmployeeManagement.Api_HostAddress}}/api/v1/employees?pageNumber=0&pageSize=101
+Accept: application/json
+

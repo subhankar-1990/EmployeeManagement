@@ -1,3 +1,4 @@
+using EmployeeManagement.Domain.Common;
 using EmployeeManagement.Infrastructure.Entity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,12 +9,32 @@ namespace EmployeeManagement.Infrastructure.Context;
 /// </summary>
 public sealed class EmployeeDbContext(DbContextOptions<EmployeeDbContext> options) : DbContext(options)
 {
+    /// <summary>Authentication records mapped to <c>AuthMaster</c>.</summary>
+    public DbSet<AuthMaster> AuthMasters => Set<AuthMaster>();
+
     /// <summary>Employees collection mapped to <c>tblEmployee</c>.</summary>
     public DbSet<TblEmployee> TblEmployees => Set<TblEmployee>();
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AuthMaster>(entity =>
+        {
+            entity.HasKey(auth => auth.AuthId);
+
+            entity.ToTable("AuthMaster");
+
+            entity.Property(auth => auth.AuthId).HasDefaultValueSql("(newid())", "DF_AuthMaster_AuthId");
+            entity.Property(auth => auth.PasswordHash).HasMaxLength(200).IsRequired();
+            entity.Property(auth => auth.Role)
+                .HasMaxLength(50)
+                .IsRequired()
+                .HasDefaultValue(Roles.Employee, "DF_AuthMaster_Role");
+            entity.Property(auth => auth.IsLocked).HasDefaultValue(false, "DF_AuthMaster_IsLocked");
+
+            entity.HasIndex(auth => auth.EmpNo).IsUnique().HasDatabaseName("UX_AuthMaster_EmpNo");
+        });
+
         modelBuilder.Entity<TblEmployee>(entity =>
         {
             entity.HasKey(e => e.EmpId);
@@ -27,3 +48,4 @@ public sealed class EmployeeDbContext(DbContextOptions<EmployeeDbContext> option
         });
     }
 }
+

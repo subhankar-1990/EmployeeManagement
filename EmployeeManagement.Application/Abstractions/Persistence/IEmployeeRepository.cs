@@ -1,3 +1,4 @@
+using EmployeeManagement.Domain.Common;
 using EmployeeManagement.Domain.Models;
 
 namespace EmployeeManagement.Application.Abstractions.Persistence;
@@ -9,6 +10,22 @@ public interface IEmployeeRepository
 {
     /// <summary>Returns every employee ordered by employee id.</summary>
     Task<IReadOnlyList<Employee>> GetAllAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Returns one page of employees ordered by employee id.
+    /// </summary>
+    /// <param name="pageNumber">One based page number.</param>
+    /// <param name="pageSize">Maximum number of records to return.</param>
+    /// <param name="search">
+    /// Optional case insensitive term matched against the name, mobile number and email address.
+    /// </param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The requested page together with the total number of matching employees.</returns>
+    Task<PagedResult<Employee>> GetPagedAsync(
+        int pageNumber,
+        int pageSize,
+        string? search,
+        CancellationToken cancellationToken = default);
 
     /// <summary>Returns a single employee by employee id, or <see langword="null"/>.</summary>
     Task<Employee?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
@@ -22,3 +39,4 @@ public interface IEmployeeRepository
     /// <summary>Deletes an employee. Returns <see langword="false"/> when not found.</summary>
     Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default);
 }
+
