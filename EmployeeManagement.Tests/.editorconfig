@@ -1,0 +1,5 @@
+[*.cs]
+# Test method names use the Method_Scenario_ExpectedResult convention, which reads better
+# in the test explorer than the CA1707 default of no underscores.
+dotnet_diagnostic.CA1707.severity = none
+

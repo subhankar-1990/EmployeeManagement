@@ -1,0 +1,48 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.{json,yml,yaml,md,sql,xml,props,csproj,slnx}]
+indent_size = 2
+
+[*.cs]
+# Using directives and namespaces
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+csharp_using_directive_placement = outside_namespace:warning
+csharp_style_namespace_declarations = file_scoped:warning
+
+# General style
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning
+dotnet_style_readonly_field = true:warning
+csharp_prefer_braces = true:warning
+csharp_style_var_when_type_is_apparent = true:suggestion
+
+# Naming: private fields use an underscore prefix and camel case (for example _logger)
+dotnet_naming_rule.private_fields_underscore.severity = suggestion
+dotnet_naming_rule.private_fields_underscore.symbols = private_fields
+dotnet_naming_rule.private_fields_underscore.style = underscore_camel_case
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_style.underscore_camel_case.required_prefix = _
+dotnet_naming_style.underscore_camel_case.capitalization = camel_case
+
+# Analyzer tuning. Each suppression is a deliberate decision, not an oversight.
+dotnet_diagnostic.CA1848.severity = none   # LoggerMessage source generation is not required for this volume of logging
+dotnet_diagnostic.CA1873.severity = none   # Logging arguments are simple value reads; LoggerMessage is a future hot path optimisation
+dotnet_diagnostic.CA2007.severity = none   # ConfigureAwait(false) is unnecessary in ASP.NET Core
+dotnet_diagnostic.CA1031.severity = none   # The exception handler must observe every exception type
+dotnet_diagnostic.CA1062.severity = none   # Nullable reference types already cover argument validation
+dotnet_diagnostic.CA1303.severity = none   # Localisation is out of scope for this API
+dotnet_diagnostic.CA1002.severity = none   # List<T> is only exposed inside the application layer
+dotnet_diagnostic.CA1819.severity = none   # Arrays are used only for configuration binding
+dotnet_diagnostic.CA2254.severity = none   # Structured log messages are intentionally literal
+dotnet_diagnostic.CA5394.severity = none   # The forward headers middleware is configured explicitly in Program.cs

@@ -1,0 +1,21 @@
+<Project>
+
+  <!--
+    Shared build settings for every project in the solution.
+    Project files only declare what makes them different (references and packages).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <!--
+      Warnings are reported but not fatal by default. CI promotes them with -warnaserror
+      so a local build stays fast while the pipeline stays strict.
+    -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+</Project>

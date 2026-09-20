@@ -1,0 +1,9 @@
+@EmployeeManagement.Api_HostAddress = https://localhost:7031
+
+### Health Check (Liveness Probe)
+GET {{EmployeeManagement.Api_HostAddress}}/healthz
+Accept: text/plain
+
+### OpenAPI Document v1
+GET {{EmployeeManagement.Api_HostAddress}}/openapi/v1.json
+Accept: application/json
