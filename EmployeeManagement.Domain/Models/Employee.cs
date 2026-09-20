@@ -5,25 +5,18 @@ namespace EmployeeManagement.Domain.Models;
 /// </summary>
 public sealed class Employee
 {
-    /// <summary>Surrogate key.</summary>
-    public Guid Id { get; init; }
+    /// <summary>Employee identifier / primary key (<c>tblEmployee.EmpId</c>).</summary>
+    public int EmpId { get; init; }
 
-    /// <summary>Human facing employee number.</summary>
-    public long EmployeeNumber { get; init; }
-
-    /// <summary>Display name.</summary>
+    /// <summary>Employee name.</summary>
     public string Name { get; init; } = string.Empty;
 
-    /// <summary>Optional 10 digit mobile number.</summary>
-    public string? MobileNumber { get; init; }
+    /// <summary>Contact mobile number.</summary>
+    public string Mobile { get; init; } = string.Empty;
 
-    /// <summary>Optional email address.</summary>
-    public string? Email { get; init; }
-
-    /// <summary>Creation timestamp.</summary>
-    public DateTime CreatedAt { get; init; }
+    /// <summary>Email address.</summary>
+    public string Email { get; init; } = string.Empty;
 
     /// <summary>Indicates whether the employee is active.</summary>
-    public bool IsActive { get; init; } = true;
+    public bool IsActive { get; init; }
 }
-

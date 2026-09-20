@@ -7,22 +7,18 @@ namespace EmployeeManagement.Application.Abstractions.Persistence;
 /// </summary>
 public interface IEmployeeRepository
 {
-    /// <summary>Returns every employee ordered by employee number.</summary>
-    Task<IReadOnlyList<Employee>> GetAllAsync(CancellationToken cancellationToken);
+    /// <summary>Returns every employee ordered by employee id.</summary>
+    Task<IReadOnlyList<Employee>> GetAllAsync(CancellationToken cancellationToken = default);
 
-    /// <summary>Returns a single employee by surrogate key, or <see langword="null"/>.</summary>
-    Task<Employee?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    /// <summary>Returns a single employee by employee id, or <see langword="null"/>.</summary>
+    Task<Employee?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
-    /// <summary>Returns a single employee by employee number, or <see langword="null"/>.</summary>
-    Task<Employee?> GetByEmployeeNumberAsync(long employeeNumber, CancellationToken cancellationToken);
-
-    /// <summary>Inserts a new employee and returns the generated surrogate key.</summary>
-    Task<Guid> AddAsync(Employee employee, CancellationToken cancellationToken);
+    /// <summary>Inserts a new employee and returns the generated employee id.</summary>
+    Task<int> AddAsync(Employee employee, CancellationToken cancellationToken = default);
 
     /// <summary>Updates the mutable fields of an existing employee. Returns <see langword="false"/> when not found.</summary>
-    Task<bool> UpdateAsync(Employee employee, CancellationToken cancellationToken);
+    Task<bool> UpdateAsync(Employee employee, CancellationToken cancellationToken = default);
 
     /// <summary>Deletes an employee. Returns <see langword="false"/> when not found.</summary>
-    Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken);
+    Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default);
 }
-
