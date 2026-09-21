@@ -8,9 +8,6 @@ namespace EmployeeManagement.Application.Abstractions.Persistence;
 /// </summary>
 public interface IEmployeeRepository
 {
-    /// <summary>Returns every employee ordered by employee id.</summary>
-    Task<IReadOnlyList<Employee>> GetAllAsync(CancellationToken cancellationToken = default);
-
     /// <summary>
     /// Returns one page of employees ordered by employee id.
     /// </summary>
@@ -39,4 +36,3 @@ public interface IEmployeeRepository
     /// <summary>Deletes an employee. Returns <see langword="false"/> when not found.</summary>
     Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default);
 }
-

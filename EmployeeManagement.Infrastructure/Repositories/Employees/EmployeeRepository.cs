@@ -13,17 +13,6 @@ namespace EmployeeManagement.Infrastructure.Repositories.Employees;
 internal sealed class EmployeeRepository(EmployeeDbContext context) : IEmployeeRepository
 {
     /// <inheritdoc />
-    public async Task<IReadOnlyList<Employee>> GetAllAsync(CancellationToken cancellationToken)
-    {
-        var employees = await context.TblEmployees
-            .AsNoTracking()
-            .OrderBy(employee => employee.EmpId)
-            .ToListAsync(cancellationToken);
-
-        return employees.Select(ToModel).ToList();
-    }
-
-    /// <inheritdoc />
     public async Task<PagedResult<Employee>> GetPagedAsync(
         int pageNumber,
         int pageSize,

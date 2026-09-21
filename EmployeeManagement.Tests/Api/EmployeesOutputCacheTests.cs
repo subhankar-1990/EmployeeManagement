@@ -39,7 +39,6 @@ public sealed class EmployeesOutputCacheTests(EmployeeManagementApiFactory facto
 
     [Theory]
     [InlineData("GetEmployees", CachingExtensions.CollectionPolicy)]
-    [InlineData("GetAllEmployees", CachingExtensions.CollectionPolicy)]
     [InlineData("GetEmployeeById", CachingExtensions.ItemPolicy)]
     public void ReadActions_UseTheExpectedCachePolicy(string actionName, string expectedPolicyName)
     {
@@ -60,40 +59,6 @@ public sealed class EmployeesOutputCacheTests(EmployeeManagementApiFactory facto
         var endpoint = FindEndpoint(actionName);
 
         Assert.Null(endpoint.Metadata.GetMetadata<OutputCacheAttribute>());
-    }
-
-    [Fact]
-    public async Task RepeatedListReads_AreServedFromTheCache_UntilASuccessfulWriteEvictsThem()
-    {
-        var repository = new CountingEmployeeRepository(FakeEmployeeRepository.Containing(SampleEmployees));
-
-        using var cachingFactory = CreateFactoryWith(repository);
-        using var client = cachingFactory.CreateClient();
-
-        var firstRead = await client.GetAsync($"{EmployeesUrl}/all");
-        var secondRead = await client.GetAsync($"{EmployeesUrl}/all");
-
-        Assert.Equal(HttpStatusCode.OK, firstRead.StatusCode);
-        Assert.Equal(HttpStatusCode.OK, secondRead.StatusCode);
-
-        // The repeated read was answered from the output cache: the repository was asked only once.
-        Assert.Equal(1, repository.GetAllCallCount);
-
-        var created = await client.PostAsJsonAsync(EmployeesUrl, new CreateEmployeeRequest
-        {
-            Name = "Alan Turing",
-            Mobile = "9000000003",
-            Email = "alan@example.com"
-        });
-
-        Assert.Equal(HttpStatusCode.Created, created.StatusCode);
-
-        var readAfterWrite = await client.GetAsync($"{EmployeesUrl}/all");
-
-        Assert.Equal(HttpStatusCode.OK, readAfterWrite.StatusCode);
-
-        // The write evicted the employees tag, so the cached list did not survive it.
-        Assert.Equal(2, repository.GetAllCallCount);
     }
 
     [Fact]
