@@ -39,6 +39,8 @@ builder.Services.AddAuthorization();
 // ---------------------------------------------------------------------------------------------
 // Layer Services: Application & Infrastructure
 // ---------------------------------------------------------------------------------------------
+builder.Services.AddApiRateLimiting(builder.Configuration);
+builder.Services.AddApiOutputCaching(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
@@ -78,6 +80,10 @@ app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseSecurityHeaders(browserRenderedPaths);
 app.UseAuthorization();
+app.UseApiRateLimiting();
+
+// Cached responses are still throttled: rate limiting runs before the cache is consulted.
+app.UseApiOutputCaching();
 
 app.MapControllers();
 
