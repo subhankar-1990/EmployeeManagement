@@ -10,28 +10,4 @@ namespace EmployeeManagement.Infrastructure.Repositories.Authentication;
 /// </summary>
 internal sealed class AuthenticationRepository(EmployeeDbContext context) : IAuthenticationRepository
 {
-    /// <inheritdoc />
-    public async Task<UserCredential?> GetCredentialAsync(long employeeNumber, CancellationToken cancellationToken)
-    {
-        var auth = await context.AuthMasters
-            .AsNoTracking()
-            .FirstOrDefaultAsync(record => record.EmpNo == employeeNumber, cancellationToken);
-
-        return auth is null
-            ? null
-            : new UserCredential
-            {
-                Id = auth.AuthId,
-                EmployeeNumber = auth.EmpNo,
-                PasswordHash = auth.PasswordHash,
-                IsLocked = auth.IsLocked,
-                Roles = ParseRoles(auth.Role)
-            };
-    }
-
-    private static string[] ParseRoles(string? roles) =>
-        string.IsNullOrWhiteSpace(roles)
-            ? []
-            : roles.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 }
-

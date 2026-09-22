@@ -1,0 +1,2 @@
+npm install nswag -g
+nswag openapi2tsclient /input:https://localhost:7031/openapi/v1.json /output:src/app/core/services/api-client.ts
