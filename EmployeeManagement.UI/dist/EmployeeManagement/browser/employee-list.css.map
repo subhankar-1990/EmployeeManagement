@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/employees/employee-list/employee-list.scss"],
+  "sourcesContent": [".field--search {\r\n  max-width: 22rem;\r\n  width: 100%;\r\n}\r\n\r\n.table__id {\r\n  width: 4.5rem;\r\n  color: var(--color-muted);\r\n}\r\n\r\n.table__actions-header {\r\n  text-align: right;\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,aAAA;AACA,SAAA;;AAGF,CAAA;AACE,SAAA;AACA,SAAA,IAAA;;AAGF,CAAA;AACE,cAAA;;",
+  "names": []
+}

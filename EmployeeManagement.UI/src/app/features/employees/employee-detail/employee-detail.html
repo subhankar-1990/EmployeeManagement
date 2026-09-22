@@ -1,0 +1,80 @@
+<section class="page">
+  <header class="page__header">
+    <div>
+      <p class="page__eyebrow">Employee details</p>
+      <h1 class="page__title">{{ employee()?.name ?? 'Employee' }}</h1>
+      <p class="page__subtitle">
+        @if (employeeId(); as id) {
+          Record #{{ id }}
+        }
+      </p>
+    </div>
+
+    <div class="page__actions">
+      <a class="btn btn--ghost" routerLink="/employees">Back to list</a>
+      @if (employee(); as current) {
+        <a class="btn btn--secondary" [routerLink]="['/employees', current.id, 'edit']">Edit</a>
+        <button type="button" class="btn btn--danger" (click)="requestDelete()">Delete</button>
+      }
+    </div>
+  </header>
+
+  @if (loading()) {
+    <div class="card">
+      <p class="status-line" role="status">
+        <span class="spinner spinner--sm" aria-hidden="true"></span>
+        Loading employee&hellip;
+      </p>
+    </div>
+  } @else if (errorMessage(); as message) {
+    <div class="alert alert--error" role="alert">
+      <p class="alert__message">{{ message }}</p>
+      <div class="alert__actions">
+        @if (employeeId()) {
+          <button type="button" class="btn btn--secondary btn--sm" (click)="reload()">Try again</button>
+        }
+        <a class="btn btn--ghost btn--sm" routerLink="/employees">Back to list</a>
+      </div>
+    </div>
+  } @else if (employee(); as current) {
+    <div class="card">
+      <dl class="details">
+        <div class="details__row">
+          <dt>Id</dt>
+          <dd>{{ current.id }}</dd>
+        </div>
+        <div class="details__row">
+          <dt>Name</dt>
+          <dd>{{ current.name }}</dd>
+        </div>
+        <div class="details__row">
+          <dt>Mobile</dt>
+          <dd><a [href]="'tel:' + current.mobile">{{ current.mobile }}</a></dd>
+        </div>
+        <div class="details__row">
+          <dt>Email</dt>
+          <dd><a [href]="'mailto:' + current.email">{{ current.email }}</a></dd>
+        </div>
+        <div class="details__row">
+          <dt>Status</dt>
+          <dd>
+            <span class="badge" [class.badge--active]="current.isActive" [class.badge--inactive]="!current.isActive">
+              {{ current.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  }
+</section>
+
+@if (deleteRequested()) {
+  <app-confirm-dialog
+    title="Delete employee"
+    [message]="deleteMessage()"
+    confirmLabel="Delete"
+    [busy]="deleteBusy()"
+    (confirmed)="confirmDelete()"
+    (cancelled)="cancelDelete()"
+  />
+}

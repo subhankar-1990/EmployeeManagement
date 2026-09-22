@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/employees/employees.routes.ts"],
+  "sourcesContent": ["import { Routes } from '@angular/router';\r\n\r\n/**\r\n * Routes of the employees feature, lazily loaded from `app.routes.ts`.\r\n *\r\n * `new` and `:id/edit` are declared before `:id` so the literal segments always win.\r\n */\r\nexport const EMPLOYEES_ROUTES: Routes = [\r\n  {\r\n    path: '',\r\n    title: 'Employees',\r\n    loadComponent: () => import('./employee-list/employee-list').then((module) => module.EmployeeList),\r\n  },\r\n  {\r\n    path: 'new',\r\n    title: 'Add employee',\r\n    loadComponent: () => import('./employee-form/employee-form').then((module) => module.EmployeeForm),\r\n  },\r\n  {\r\n    path: ':id/edit',\r\n    title: 'Edit employee',\r\n    loadComponent: () => import('./employee-form/employee-form').then((module) => module.EmployeeForm),\r\n  },\r\n  {\r\n    path: ':id',\r\n    title: 'Employee details',\r\n    loadComponent: () => import('./employee-detail/employee-detail').then((module) => module.EmployeeDetail),\r\n  },\r\n];\r\n"],
+  "mappings": ";;;;;;AAOO,IAAM,mBAA2B;EACtC;IACE,MAAM;IACN,OAAO;IACP,eAAe,MAAM,OAAO,sBAA+B,EAAE,KAAK,CAAC,WAAW,OAAO,YAAY;;EAEnG;IACE,MAAM;IACN,OAAO;IACP,eAAe,MAAM,OAAO,sBAA+B,EAAE,KAAK,CAAC,WAAW,OAAO,YAAY;;EAEnG;IACE,MAAM;IACN,OAAO;IACP,eAAe,MAAM,OAAO,sBAA+B,EAAE,KAAK,CAAC,WAAW,OAAO,YAAY;;EAEnG;IACE,MAAM;IACN,OAAO;IACP,eAAe,MAAM,OAAO,sBAAmC,EAAE,KAAK,CAAC,WAAW,OAAO,cAAc;;;",
+  "names": []
+}

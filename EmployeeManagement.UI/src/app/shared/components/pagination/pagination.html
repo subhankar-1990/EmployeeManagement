@@ -1,0 +1,54 @@
+<nav class="pagination" aria-label="Pagination">
+  <p class="pagination__summary">
+    @if (totalCount() === 0) {
+      No results
+    } @else {
+      Showing <strong>{{ firstRowNumber() }}</strong>–<strong>{{ lastRowNumber() }}</strong> of
+      <strong>{{ totalCount() }}</strong>
+    }
+  </p>
+
+  <div class="pagination__controls">
+    <label class="pagination__size">
+      <span>Rows per page</span>
+      <select class="field__control field__control--compact" [value]="pageSize()" [disabled]="disabled()" (change)="onPageSizeChange($event)">
+        @for (option of pageSizeOptions(); track option) {
+          <option [value]="option">{{ option }}</option>
+        }
+      </select>
+    </label>
+
+    <div class="pagination__pages">
+      <button
+        type="button"
+        class="btn btn--secondary btn--sm"
+        [disabled]="disabled() || !hasPreviousPage()"
+        (click)="goToPage(pageNumber() - 1)"
+      >
+        Previous
+      </button>
+
+      @for (page of pages(); track page) {
+        <button
+          type="button"
+          class="btn btn--sm pagination__page"
+          [class.is-current]="page === pageNumber()"
+          [attr.aria-current]="page === pageNumber() ? 'page' : null"
+          [disabled]="disabled()"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+      }
+
+      <button
+        type="button"
+        class="btn btn--secondary btn--sm"
+        [disabled]="disabled() || !hasNextPage()"
+        (click)="goToPage(pageNumber() + 1)"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</nav>

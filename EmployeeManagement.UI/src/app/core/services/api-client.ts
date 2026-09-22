@@ -17,7 +17,7 @@ export class EmployeesClient {
         this.baseUrl = baseUrl ?? "https://localhost:7031/";
     }
 
-    getEmployees(pageNumber: number | undefined, pageSize: number | undefined, search: string | undefined): Promise<PagedResponseOfEmployeeResponse> {
+    async getEmployees(pageNumber: number | undefined, pageSize: number | undefined, search: string | undefined): Promise<PagedResponseOfEmployeeResponse> {
         let url_ = this.baseUrl + "/api/v1/employees?";
         if (pageNumber === null)
             throw new globalThis.Error("The parameter 'pageNumber' cannot be null.");
@@ -40,9 +40,8 @@ export class EmployeesClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetEmployees(_response);
-        });
+        const _response = await this.http.fetch(url_, options_);
+        return await this.processGetEmployees(_response);
     }
 
     protected processGetEmployees(response: Response): Promise<PagedResponseOfEmployeeResponse> {
@@ -78,7 +77,7 @@ export class EmployeesClient {
     }
 
 
-    createEmployee(idempotency_Key: string | undefined, body: CreateEmployeeRequest): Promise<EmployeeResponse> {
+    async createEmployee(idempotency_Key: string | undefined, body: CreateEmployeeRequest): Promise<EmployeeResponse> {
         let url_ = this.baseUrl + "/api/v1/employees";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -94,9 +93,8 @@ export class EmployeesClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processCreateEmployee(_response);
-        });
+        const _response = await this.http.fetch(url_, options_);
+        return await this.processCreateEmployee(_response);
     }
 
     protected processCreateEmployee(response: Response): Promise<EmployeeResponse> {
@@ -139,7 +137,7 @@ export class EmployeesClient {
     }
 
 
-    getEmployeeById(id: number): Promise<EmployeeResponse> {
+    async getEmployeeById(id: number): Promise<EmployeeResponse> {
         let url_ = this.baseUrl + "/api/v1/employees/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
@@ -153,9 +151,8 @@ export class EmployeesClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetEmployeeById(_response);
-        });
+        const _response = await this.http.fetch(url_, options_);
+        return await this.processGetEmployeeById(_response);
     }
 
     protected processGetEmployeeById(response: Response): Promise<EmployeeResponse> {
@@ -198,7 +195,7 @@ export class EmployeesClient {
     }
 
 
-    updateEmployee(id: number, body: UpdateEmployeeRequest): Promise<void> {
+    async updateEmployee(id: number, body: UpdateEmployeeRequest): Promise<void> {
         let url_ = this.baseUrl + "/api/v1/employees/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
@@ -216,9 +213,8 @@ export class EmployeesClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUpdateEmployee(_response);
-        });
+        const _response = await this.http.fetch(url_, options_);
+        return await this.processUpdateEmployee(_response);
     }
 
     protected processUpdateEmployee(response: Response): Promise<void> {
@@ -226,7 +222,7 @@ export class EmployeesClient {
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 204) {
             return response.text().then((_responseText) => {
-            return null;
+            return;
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
@@ -257,7 +253,7 @@ export class EmployeesClient {
         return Promise.resolve<void>(null as any);
     }
 
-    deleteEmployee(id: number): Promise<void> {
+    async deleteEmployee(id: number): Promise<void> {
         let url_ = this.baseUrl + "/api/v1/employees/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
@@ -271,9 +267,8 @@ export class EmployeesClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processDeleteEmployee(_response);
-        });
+        const _response = await this.http.fetch(url_, options_);
+        return await this.processDeleteEmployee(_response);
     }
 
     protected processDeleteEmployee(response: Response): Promise<void> {
@@ -281,7 +276,7 @@ export class EmployeesClient {
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 204) {
             return response.text().then((_responseText) => {
-            return null;
+            return;
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {

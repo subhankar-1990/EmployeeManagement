@@ -1,0 +1,37 @@
+.details {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.details__row {
+  display: grid;
+  grid-template-columns: minmax(7rem, 12rem) 1fr;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.details__row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.details__row:first-child {
+  padding-top: 0;
+}
+
+.details dt {
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.details dd {
+  margin: 0;
+  word-break: break-word;
+}
+
+.details dd a {
+  color: var(--color-primary);
+}

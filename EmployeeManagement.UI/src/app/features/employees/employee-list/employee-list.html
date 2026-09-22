@@ -1,0 +1,123 @@
+<section class="page">
+  <header class="page__header">
+    <div>
+      <p class="page__eyebrow">Directory</p>
+      <h1 class="page__title">Employees</h1>
+      <p class="page__subtitle">Browse, search and manage every employee record.</p>
+    </div>
+
+    <div class="page__actions">
+      <button type="button" class="btn btn--secondary" [disabled]="loading()" (click)="reload()">Refresh</button>
+      <a class="btn btn--primary" routerLink="/employees/new">Add employee</a>
+    </div>
+  </header>
+
+  @if (notice(); as message) {
+    <div class="alert alert--success" role="status">
+      <p class="alert__message">{{ message }}</p>
+      <button type="button" class="alert__dismiss" aria-label="Dismiss message" (click)="dismissNotice()">&times;</button>
+    </div>
+  }
+
+  <div class="card">
+    <div class="card__toolbar">
+      <div class="field field--search">
+        <label class="field__label" for="employee-search">Search</label>
+        <input
+          id="employee-search"
+          type="search"
+          class="field__control"
+          placeholder="Name, mobile or email"
+          autocomplete="off"
+          [value]="searchTerm()"
+          (input)="onSearchInput($event)"
+        />
+      </div>
+
+      @if (loading()) {
+        <p class="status-line" role="status">
+          <span class="spinner spinner--sm" aria-hidden="true"></span>
+          Loading employees&hellip;
+        </p>
+      }
+    </div>
+
+    @if (errorMessage(); as message) {
+      <div class="alert alert--error" role="alert">
+        <p class="alert__message">{{ message }}</p>
+        <button type="button" class="btn btn--secondary btn--sm" (click)="reload()">Try again</button>
+      </div>
+    }
+
+    @if (showEmptyState()) {
+      <div class="empty-state">
+        @if (searchTerm()) {
+          <p>No employee matches &ldquo;{{ searchTerm() }}&rdquo;.</p>
+          <p class="empty-state__hint">Try a different name, mobile number or email address.</p>
+        } @else {
+          <p>No employees have been added yet.</p>
+        }
+
+        <a class="btn btn--primary" routerLink="/employees/new">Add employee</a>
+      </div>
+    } @else if (employees().length > 0) {
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="table__id">Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Mobile</th>
+              <th scope="col">Email</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="table__actions-header">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (employee of employees(); track employee.id) {
+              <tr>
+                <td class="table__id">{{ employee.id }}</td>
+                <td class="table__primary">{{ employee.name }}</td>
+                <td>{{ employee.mobile }}</td>
+                <td>{{ employee.email }}</td>
+                <td>
+                  <span class="badge" [class.badge--active]="employee.isActive" [class.badge--inactive]="!employee.isActive">
+                    {{ employee.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+                <td class="table__actions">
+                  <a class="btn btn--ghost btn--sm" [routerLink]="['/employees', employee.id]">View</a>
+                  <a class="btn btn--ghost btn--sm" [routerLink]="['/employees', employee.id, 'edit']">Edit</a>
+                  <button type="button" class="btn btn--ghost btn--sm btn--danger-text" (click)="requestDelete(employee)">Delete</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <app-pagination
+        [pageNumber]="pageNumber()"
+        [pageSize]="pageSize()"
+        [totalCount]="totalCount()"
+        [totalPages]="totalPages()"
+        [hasPreviousPage]="hasPreviousPage()"
+        [hasNextPage]="hasNextPage()"
+        [disabled]="loading()"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
+      />
+    }
+  </div>
+</section>
+
+@if (pendingDelete()) {
+  <app-confirm-dialog
+    title="Delete employee"
+    [message]="deleteMessage()"
+    confirmLabel="Delete"
+    [busy]="deleteBusy()"
+    (confirmed)="confirmDelete()"
+    (cancelled)="cancelDelete()"
+  />
+}

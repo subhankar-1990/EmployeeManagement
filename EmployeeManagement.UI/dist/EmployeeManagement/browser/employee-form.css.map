@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/employees/employee-form/employee-form.scss"],
+  "sourcesContent": [".form__grid {\r\n  display: grid;\r\n  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));\r\n  gap: 1rem 1.25rem;\r\n}\r\n\r\n.form__actions {\r\n  display: flex;\r\n  justify-content: flex-end;\r\n  gap: 0.75rem;\r\n  margin-top: 1.5rem;\r\n}\r\n\r\n.field__required {\r\n  color: var(--color-danger);\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,WAAA;AACA,yBAAA,OAAA,QAAA,EAAA,OAAA,KAAA,EAAA;AACA,OAAA,KAAA;;AAGF,CAAA;AACE,WAAA;AACA,mBAAA;AACA,OAAA;AACA,cAAA;;AAGF,CAAA;AACE,SAAA,IAAA;;",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/shared/components/pagination/pagination.scss"],
+  "sourcesContent": [".pagination {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  gap: 1rem;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  padding: 0.85rem 1.25rem;\r\n  border-top: 1px solid var(--color-border);\r\n}\r\n\r\n.pagination__summary {\r\n  margin: 0;\r\n  color: var(--color-muted);\r\n  font-size: 0.875rem;\r\n}\r\n\r\n.pagination__controls {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  align-items: center;\r\n  gap: 1rem;\r\n}\r\n\r\n.pagination__size {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 0.5rem;\r\n  font-size: 0.875rem;\r\n  color: var(--color-muted);\r\n}\r\n\r\n.pagination__pages {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 0.25rem;\r\n}\r\n\r\n.pagination__page {\r\n  min-width: 2.25rem;\r\n}\r\n\r\n.pagination__page.is-current {\r\n  background: var(--color-primary);\r\n  border-color: var(--color-primary);\r\n  color: #fff;\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,WAAA;AACA,aAAA;AACA,OAAA;AACA,eAAA;AACA,mBAAA;AACA,WAAA,QAAA;AACA,cAAA,IAAA,MAAA,IAAA;;AAGF,CAAA;AACE,UAAA;AACA,SAAA,IAAA;AACA,aAAA;;AAGF,CAAA;AACE,WAAA;AACA,aAAA;AACA,eAAA;AACA,OAAA;;AAGF,CAAA;AACE,WAAA;AACA,eAAA;AACA,OAAA;AACA,aAAA;AACA,SAAA,IAAA;;AAGF,CAAA;AACE,WAAA;AACA,eAAA;AACA,OAAA;;AAGF,CAAA;AACE,aAAA;;AAGF,CAJA,gBAIA,CAAA;AACE,cAAA,IAAA;AACA,gBAAA,IAAA;AACA,SAAA;;",
+  "names": []
+}

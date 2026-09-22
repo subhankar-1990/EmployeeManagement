@@ -1,0 +1,14 @@
+{
+  "/api": {
+    "target": "https://localhost:7031",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "warn"
+  },
+  "/healthz": {
+    "target": "https://localhost:7031",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "warn"
+  }
+}

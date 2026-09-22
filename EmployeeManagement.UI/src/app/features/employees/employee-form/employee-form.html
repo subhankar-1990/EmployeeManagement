@@ -1,0 +1,107 @@
+<section class="page">
+  <header class="page__header">
+    <div>
+      <p class="page__eyebrow">{{ isEditMode() ? 'Update record' : 'New record' }}</p>
+      <h1 class="page__title">{{ isEditMode() ? 'Edit employee' : 'Add employee' }}</h1>
+      <p class="page__subtitle">
+        @if (isEditMode()) {
+          Update the details of employee #{{ employeeId() }}.
+        } @else {
+          Create a new record in the employee directory.
+        }
+      </p>
+    </div>
+
+    <a class="btn btn--ghost" routerLink="/employees">Back to list</a>
+  </header>
+
+  @if (loadError(); as message) {
+    <div class="alert alert--error" role="alert">
+      <p class="alert__message">{{ message }}</p>
+      <div class="alert__actions">
+        <button type="button" class="btn btn--secondary btn--sm" (click)="loadEmployee()">Try again</button>
+        <a class="btn btn--ghost btn--sm" routerLink="/employees">Back to list</a>
+      </div>
+    </div>
+  } @else if (loading()) {
+    <div class="card">
+      <p class="status-line" role="status">
+        <span class="spinner spinner--sm" aria-hidden="true"></span>
+        Loading employee&hellip;
+      </p>
+    </div>
+  } @else {
+    <form class="card form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="form__grid">
+        <div class="field">
+          <label class="field__label" for="name">Name <span class="field__required" aria-hidden="true">*</span></label>
+          <input
+            id="name"
+            type="text"
+            class="field__control"
+            formControlName="name"
+            autocomplete="name"
+            [attr.maxlength]="limits.name"
+            [attr.aria-invalid]="showError('name')"
+          />
+          @if (showError('name')) {
+            <p class="field__error">{{ validationMessage('name', 'Name') }}</p>
+          }
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="mobile">Mobile <span class="field__required" aria-hidden="true">*</span></label>
+          <input
+            id="mobile"
+            type="tel"
+            class="field__control"
+            formControlName="mobile"
+            autocomplete="tel"
+            [attr.maxlength]="limits.mobile"
+            [attr.aria-invalid]="showError('mobile')"
+          />
+          @if (showError('mobile')) {
+            <p class="field__error">{{ validationMessage('mobile', 'Mobile') }}</p>
+          }
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="email">Email <span class="field__required" aria-hidden="true">*</span></label>
+          <input
+            id="email"
+            type="email"
+            class="field__control"
+            formControlName="email"
+            autocomplete="email"
+            [attr.maxlength]="limits.email"
+            [attr.aria-invalid]="showError('email')"
+          />
+          @if (showError('email')) {
+            <p class="field__error">{{ validationMessage('email', 'Email') }}</p>
+          }
+        </div>
+      </div>
+
+      <label class="checkbox">
+        <input id="isActive" type="checkbox" formControlName="isActive" />
+        <span>Active employee</span>
+      </label>
+
+      @if (saveError(); as message) {
+        <div class="alert alert--error" role="alert">
+          <p class="alert__message">{{ message }}</p>
+        </div>
+      }
+
+      <div class="form__actions">
+        <button type="button" class="btn btn--secondary" [disabled]="saving()" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn btn--primary" [disabled]="saving()">
+          @if (saving()) {
+            <span class="spinner spinner--sm" aria-hidden="true"></span>
+          }
+          <span>{{ isEditMode() ? 'Save changes' : 'Create employee' }}</span>
+        </button>
+      </div>
+    </form>
+  }
+</section>
