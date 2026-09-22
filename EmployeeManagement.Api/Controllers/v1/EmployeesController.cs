@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using EmployeeManagement.Api.Idempotency;
 using EmployeeManagement.Api.Middleware;
 using EmployeeManagement.Application.Contracts.Common;
 using EmployeeManagement.Application.Contracts.Employees;
@@ -22,6 +23,11 @@ namespace EmployeeManagement.Api.Controllers.V1;
 /// The read endpoints are served from the output cache, see <see cref="CachingExtensions"/>. Every
 /// successful write evicts the <see cref="CachingExtensions.EmployeesTag"/> tag, so a cached
 /// response can never outlive the data it was built from.
+/// </para>
+/// <para>
+/// <see cref="CreateEmployee"/> is idempotent when the caller sends an <c>Idempotency-Key</c>
+/// header, see <see cref="IdempotentAttribute"/>: a retry is answered from the stored response
+/// instead of creating a second employee.
 /// </para>
 /// </remarks>
 [ApiController]
@@ -112,12 +118,32 @@ public sealed class EmployeesController(
     /// </summary>
     /// <param name="request">Employee data.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
-    /// <response code="201">The newly created employee.</response>
-    /// <response code="400">The request body failed validation.</response>
+    /// <response code="201">The newly created employee, or the employee stored for a replayed key.</response>
+    /// <response code="400">The request body or the idempotency key failed validation.</response>
+    /// <response code="409">
+    /// The key in the <c>Idempotency-Key</c> header is still being processed, or it was already used
+    /// with a different payload.
+    /// </response>
+    /// <remarks>
+    /// <para>
+    /// The endpoint is idempotent for clients that send an <c>Idempotency-Key</c> header. The first
+    /// request with a key creates the employee and its response is stored; a retry that carries the
+    /// same key and the same body is answered from that stored response - marked with
+    /// <c>Idempotency-Replayed: true</c> - and no second record is created. Without the header the
+    /// endpoint keeps its plain POST behaviour, so idempotency is opt-in per request.
+    /// </para>
+    /// <para>
+    /// A key that was already used with a different body, or that is still being processed by an
+    /// earlier request, is rejected with <c>409 Conflict</c>. A request that failed validation stores
+    /// nothing, so a corrected payload can reuse the same key.
+    /// </para>
+    /// </remarks>
     [HttpPost(Name = "Employees_CreateEmployee")]
+    [Idempotent]
     [EnableRateLimiting(RateLimitingExtensions.WritePolicy)]
     [ProducesResponseType(typeof(EmployeeResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status429TooManyRequests)]
     public async Task<ActionResult<EmployeeResponse>> CreateEmployee(
         [FromBody] CreateEmployeeRequest request,

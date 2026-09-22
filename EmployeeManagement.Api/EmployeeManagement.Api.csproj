@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <!-- TargetFramework, Nullable, and ImplicitUsings are inherited from Directory.Build.props -->
+  <PropertyGroup><!-- TargetFramework, Nullable, and ImplicitUsings are inherited from Directory.Build.props -->
+  
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <DocumentationFile>EmployeeManagementApi.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

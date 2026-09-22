@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using EmployeeManagement.Api.Documentation;
+using EmployeeManagement.Api.Idempotency;
 using EmployeeManagement.Api.Middleware;
 using EmployeeManagement.Application;
 using EmployeeManagement.Infrastructure;
@@ -25,8 +26,13 @@ builder.Services.AddApiVersioning(options =>
     options.GroupNameFormat = "'v'VVV";
     options.SubstituteApiVersionInUrl = true;
 })
-// Declares OpenAPI documents and Bearer security scheme transformer for Swagger UI
-.AddOpenApi(options => options.Document.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
+// Declares OpenAPI documents, a Bearer security scheme transformer and the transformer that
+// documents the idempotency header for write endpoints.
+.AddOpenApi(options =>
+{
+    options.Document.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+    options.Document.AddOperationTransformer<IdempotencyOperationTransformer>();
+});
 
 // ---------------------------------------------------------------------------------------------
 // Core Services: Exception Handling, Diagnostics, and Health Checks
@@ -41,6 +47,7 @@ builder.Services.AddAuthorization();
 // ---------------------------------------------------------------------------------------------
 builder.Services.AddApiRateLimiting(builder.Configuration);
 builder.Services.AddApiOutputCaching(builder.Configuration);
+builder.Services.AddApiIdempotency(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
