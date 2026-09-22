@@ -154,7 +154,7 @@ function messageForStatus(
   }
 
   if (status >= 500) {
-    const message = detail ?? 'The API reported an unexpected error. Please try again in a moment.';
+    const message = detail ?? 'The API is down now. Please try again in a moment.';
     return traceId ? `${message} (trace id: ${traceId})` : message;
   }
 
